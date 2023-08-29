@@ -20,6 +20,6 @@ qnt_velas = 20
 timeframe = 60
 
 [MINUTOS]
-tempo_de = 1.00
-tempo_ate = 2.00
-tempo_fim = 2.59
+tempo_de = 4.59
+tempo_ate = 5.00
+tempo_fim = 9.59
