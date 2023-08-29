@@ -5,7 +5,7 @@
 ### Agora utilize este repositório:
 
 #### 2. Copie ou baixe os arquivos: config.txt, bot.py
-  - [Baixe]()
+  - [Baixe](https://github.com/yujiwillian/IQ_Option_API_MHI/archive/refs/heads/main.zip)
 
 #### 3. Abra o arquivo "config.txt" (Esse arquivo é a configuração que você deseja):
   - No campo LOGIN:
