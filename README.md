@@ -2,12 +2,29 @@
 
 #### 1. Primeiro, instale o Python [clicando aqui](https://www.python.org/downloads/), e tenha uma conta na [IQ Option](https://iqoption.com/)
 
+### Agora vamos instalar os pacotes e bibliotecas da IQOptionAPI.Stable_API
+
+#### 2. Abra o terminal (CMD) na sua máquina e digite:
+  -  pip install websocket-client==0.56
+    OBS: Caso haja outra versão websocket-client instalada, desinstale usando o comando: pip3 uninstall websocket-client
+    Após isso, instale a versão websocket-client 0.56
+
+- Baixe a pasta da API do Lu-Yi-Hsun [clicando aqui](https://github.com/Lu-Yi-Hsun/iqoptionapi.git)
+- No terminal (CMD) vá até essa pasta baixada, encontre o arquivo setup.py.
+- Ao encontrar, digite: python setup.py install
+- OBS: Caso você não saiba como achar o arquivo dentro do terminal para executar. Siga os passos:
+Se o terminal estiver apontando no diretório raíz, só digitar: 
+  -  cd Downloads
+  -  cd iqoptionapi
+  -  python setup.py install
+- Pronto! Instalou os pacotes, bibliotecas e dependências do iqoptionapi.stable_api
+
 ### Agora utilize este repositório:
 
-#### 2. Copie ou baixe os arquivos: config.txt, bot.py
+#### 3. Copie ou baixe os arquivos: config.txt, bot.py
   - [Baixe](https://github.com/yujiwillian/IQ_Option_API_MHI/archive/refs/heads/main.zip)
 
-#### 3. Abra o arquivo "config.txt" (Esse arquivo é a configuração que você deseja):
+#### 4. Abra o arquivo "config.txt" (Esse arquivo é a configuração que você deseja):
   - No campo LOGIN:
   - Coloque o seu e-mail no campo "INSIRA O SEU E-MAIL"
   - Coloque a sua senha no campo "INSIRA A SUA SENHA"
@@ -34,14 +51,10 @@
   -  tempo_ate: Tempo limite para a entrada;
   -  tempo_fim: Tempo de expiração, e nesse tempo ele não fará mais a entrada. Irá recomeçar o tempo e análise.
 
-### Agora vamos instalar os pacotes e bibliotecas do Python
-
-#### 4. Abra algum terminal (CMD) na sua máquina e digite:
-  -  pip install websocket-client==1.5.1
 
 ### Execute o bot.py
 
-#### 5. Ainda com o terminal (CMD) aberto, digite:
+#### 5. Ainda com o terminal (CMD) aberto, localize a pasta do bot.py digite:
   -  python bot.py
 
 OBS: Caso você não saiba como achar o arquivo dentro do terminal para executar. Siga os passos:
