@@ -1,7 +1,5 @@
 # IQ_Option_API_MHI
 
-## Não deixe a ganância corromper você, utilize com sabedoria.
-
 #### 1. Primeiro, instale o Python [clicando aqui](https://www.python.org/downloads/), e tenha uma conta na [IQ Option](https://iqoption.com/)
 
 ### Agora vamos instalar os pacotes e bibliotecas da IQOptionAPI.Stable_API
@@ -75,3 +73,5 @@ Nessa sequência você está apontando que o terminal (CMD) entre na pasta Downl
 
 ##Imagem do bot funcionando:
 ![Captura de Tela 2023-08-28 às 21 53 33](https://github.com/yujiwillian/IQ_Option_API_MHI/assets/93338593/460abbd2-0dce-48cc-9c5c-7df14e32228c)
+
+# Não deixe a ganância corromper você, utilize com sabedoria.
