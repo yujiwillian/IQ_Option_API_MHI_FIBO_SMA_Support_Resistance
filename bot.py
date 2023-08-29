@@ -194,9 +194,9 @@ def compra(ativo,entrada,direcao,exp,tipo):
                             media = soma / velas_medias
 
                             if media > velas[-1]['close']:
-                                tendencia = 'call'
-                            else:
                                 tendencia = 'put'
+                            else:
+                                tendencia = 'call'
 
                             return tendencia
 
@@ -256,8 +256,8 @@ def compra(ativo,entrada,direcao,exp,tipo):
 
                                     cores = velas[-3] ,velas[-2] ,velas[-1] 
 
-                                    if cores.count('Verde') > cores.count('Vermelha') and cores.count('Doji') == 0: direcao = 'put'
-                                    if cores.count('Verde') < cores.count('Vermelha') and cores.count('Doji') == 0: direcao = 'call'
+                                    if cores.count('Verde') > cores.count('Vermelha') and cores.count('Doji') == 0: direcao = 'call'
+                                    if cores.count('Verde') < cores.count('Vermelha') and cores.count('Doji') == 0: direcao = 'put'
 
                                     if analise_medias =='S':
                                         if direcao == tendencia:
@@ -310,9 +310,9 @@ def medias(velas):
     media = soma / velas_medias
 
     if media > velas[-1]['close']:
-        tendencia = 'call'
-    else:
         tendencia = 'put'
+    else:
+        tendencia = 'call'
 
     return tendencia
 
@@ -368,8 +368,8 @@ def estrategia_mhi():
 
             cores = velas[-3] ,velas[-2] ,velas[-1] 
 
-            if cores.count('Verde') > cores.count('Vermelha') and cores.count('Doji') == 0: direcao = 'put'
-            if cores.count('Verde') < cores.count('Vermelha') and cores.count('Doji') == 0: direcao = 'call'
+            if cores.count('Verde') > cores.count('Vermelha') and cores.count('Doji') == 0: direcao = 'call'
+            if cores.count('Verde') < cores.count('Vermelha') and cores.count('Doji') == 0: direcao = 'put'
 
             if analise_medias =='S':
                 if direcao == tendencia:
