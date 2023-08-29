@@ -1,5 +1,7 @@
 # IQ_Option_API_MHI
 
+## Não deixe a ganância corromper você, utilize com sabedoria.
+
 #### 1. Primeiro, instale o Python [clicando aqui](https://www.python.org/downloads/), e tenha uma conta na [IQ Option](https://iqoption.com/)
 
 ### Agora vamos instalar os pacotes e bibliotecas da IQOptionAPI.Stable_API
