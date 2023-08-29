@@ -256,8 +256,8 @@ def compra(ativo,entrada,direcao,exp,tipo):
 
                                     cores = velas[-3] ,velas[-2] ,velas[-1] 
 
-                                    if cores.count('Verde') > cores.count('Vermelha') and cores.count('Doji') == 0: direcao = 'call'
-                                    if cores.count('Verde') < cores.count('Vermelha') and cores.count('Doji') == 0: direcao = 'put'
+                                    if cores.count('Verde') > cores.count('Vermelha') and cores.count('Doji') == 0: direcao = 'put'
+                                    if cores.count('Verde') < cores.count('Vermelha') and cores.count('Doji') == 0: direcao = 'call'
 
                                     if analise_medias =='S':
                                         if direcao == tendencia:
@@ -368,8 +368,8 @@ def estrategia_mhi():
 
             cores = velas[-3] ,velas[-2] ,velas[-1] 
 
-            if cores.count('Verde') > cores.count('Vermelha') and cores.count('Doji') == 0: direcao = 'call'
-            if cores.count('Verde') < cores.count('Vermelha') and cores.count('Doji') == 0: direcao = 'put'
+            if cores.count('Verde') > cores.count('Vermelha') and cores.count('Doji') == 0: direcao = 'put'
+            if cores.count('Verde') < cores.count('Vermelha') and cores.count('Doji') == 0: direcao = 'call'
 
             if analise_medias =='S':
                 if direcao == tendencia:
