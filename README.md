@@ -5,7 +5,7 @@
 ### Agora vamos instalar os pacotes e bibliotecas da IQOptionAPI.Stable_API
 
 #### 2. Abra o terminal (CMD) na sua máquina e digite:
-  -  pip install websocket-client==0.56
+  -  pip3 install websocket-client==0.56
       -  OBS: Caso haja outra versão websocket-client instalada, desinstale usando o comando: pip3 uninstall websocket-client
     Após isso, instale a versão websocket-client 0.56
 
