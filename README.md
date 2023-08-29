@@ -47,9 +47,9 @@ Se o terminal estiver apontando no diretório raíz, só digitar:
   -  timeframe: Tempo da vela (colocar em segundos).
 
   -  No campo MINUTOS:
-  -  tempo_de: Início do tempo para a entrada;
-  -  tempo_ate: Tempo limite para a entrada;
-  -  tempo_fim: Tempo de expiração, e nesse tempo ele não fará mais a entrada. Irá recomeçar o tempo e análise.
+  -  tempo_de: Início do tempo para a entrada (Se preferir, pode deixar 4.59);
+  -  tempo_ate: Tempo limite para a entrada (Se preferir, pode deixar 5.00);
+  -  tempo_fim: Tempo de expiração, e nesse tempo ele não fará mais a entrada. Irá recomeçar o tempo e análise (Se preferir, pode deixar 9.59).
 
 
 ### Execute o bot.py
