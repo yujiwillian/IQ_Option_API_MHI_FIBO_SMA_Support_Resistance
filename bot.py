@@ -269,7 +269,10 @@ def compra(ativo,entrada,direcao,exp,tipo):
 
                                     if direcao == 'put' or direcao == 'call':
                                         print('Velas: ',velas[-3] ,velas[-2] ,velas[-1] , ' - Entrada para ', direcao)
-
+                                        if direcao=='put':
+                                            direcao='call'
+                                        else:
+                                            direcao='put'
                                         compra(ativo,valor_entrada,direcao,1,tipo)
                                         print('\n')
 
@@ -380,6 +383,10 @@ def estrategia_mhi():
 
 
             if direcao == 'put' or direcao == 'call':
+                if direcao=='put':
+                    direcao='call'
+                else:
+                    direcao='put'
                 print('Velas: ',velas[-3] ,velas[-2] ,velas[-1] , ' - Entrada para ', direcao)
                 valor_entrada = float(config['AJUSTES']['valor_entrada'])
                 compra(ativo,valor_entrada,direcao,1,tipo)
