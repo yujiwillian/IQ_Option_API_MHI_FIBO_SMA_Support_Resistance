@@ -39,7 +39,7 @@ Se o terminal estiver apontando no diretório raíz, só digitar:
 
   -  No campo MARTINGALE:
   -  usar_martingale: Se deseja que o bot utilize Martingale, colocar "S", caso contrário "N";
-  -  niveis_martingale: Quantidade de vezes que o bot poderá fazer o Martingale;
+  -  maximo_perda_martingale: Inserir o valor máximo ($) que ele poderá fazer o Martingale;
   -  fator_martingale: É a multiplicação do martingale (Deixei como 2.6, que significa que ele vai multiplicar o valor perdido em 2.6).
 
   -  No campo VELAS:
