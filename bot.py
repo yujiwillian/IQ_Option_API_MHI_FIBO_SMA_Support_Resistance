@@ -281,7 +281,6 @@ def compra(ativo,entrada,direcao,exp,tipo):
                                             print('Velas: ',velas[-3] ,velas[-2] ,velas[-1] )
                                             print('Entrada abortada - Contra Tendência.')
                                             print('\nSeu Saldo na conta ',escolha, 'é de', cifrao,float(API.get_balance()))
-                                            print('\nMartingale: ',i)
 
                                         else:
                                             print('Velas: ',velas[-3] ,velas[-2] ,velas[-1] )
