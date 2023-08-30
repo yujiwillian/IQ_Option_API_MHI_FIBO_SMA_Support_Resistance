@@ -1,18 +1,18 @@
 [LOGIN]
-email = INSIRA O SEU E-MAIL
-senha = INSIRA A SUA SENHA
+email = INSERIR O SEU E-MAIL
+senha = INSERIR A SUA SENHA
 
 [AJUSTES]
 valor_entrada = 2
 tipo = automatico
-stop_win = 1000
+stop_win = 100
 stop_loss = 1000
 analise_medias = S
 velas_medias = 20
 
 [MARTINGALE]
 usar_martingale = S
-niveis_martingale = 10
+maximo_perda_martingale = 100
 fator_martingale = 2.6
 
 [VELAS]
