@@ -22,7 +22,7 @@ lucro_total = 0
 stop = True
 
 if config['MARTINGALE']['usar_martingale'].upper() == 'S':
-    martingale = int(config['MARTINGALE']['niveis_martingale'])
+    martingale = int(config['MARTINGALE']['maximo_perda_martingale'])
 else:
     martingale = 0
 fator_mg = float(config['MARTINGALE']['fator_martingale'])
@@ -177,7 +177,7 @@ def compra(ativo,entrada,direcao,exp,tipo):
                     break
                     
                 else:
-                    if i+1 <= martingale:
+                    if valor_entrada <= martingale:
                         global horario, medias,estrategia_mhi
 
                         ### Fução que busca hora da corretora ###
@@ -281,6 +281,7 @@ def compra(ativo,entrada,direcao,exp,tipo):
                                             print('Velas: ',velas[-3] ,velas[-2] ,velas[-1] )
                                             print('Entrada abortada - Contra Tendência.')
                                             print('\nSeu Saldo na conta ',escolha, 'é de', cifrao,float(API.get_balance()))
+                                            print('\nMartingale: ',i)
 
                                         else:
                                             print('Velas: ',velas[-3] ,velas[-2] ,velas[-1] )
@@ -292,6 +293,7 @@ def compra(ativo,entrada,direcao,exp,tipo):
                             else:
                                 break
                     else:
+                        print('\nMartingale máximo atingido! Recomeçando...')
                         break
 
             else:
