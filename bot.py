@@ -243,10 +243,12 @@ def compra(ativo,entrada,direcao,exp,tipo):
 
                                     if analise_medias == 'S':
                                         velas = API.get_candles(ativo, timeframe, velas_medias, time.time())
+                                        vela = API.get_candles(ativo, timeframe, velas_medias, time.time())
                                         tendencia = medias(velas)
 
                                     else:
                                         velas = API.get_candles(ativo, timeframe, qnt_velas, time.time())
+                                        vela = API.get_candles(ativo, timeframe, velas_medias, time.time())
 
 
                                     velas[-1] = 'Verde' if velas[-1]['open'] < velas[-1]['close'] else 'Vermelha' if velas[-1]['open'] > velas[-1]['close'] else 'Doji'
@@ -258,7 +260,10 @@ def compra(ativo,entrada,direcao,exp,tipo):
 
                                     if cores.count('Verde') > cores.count('Vermelha') and cores.count('Doji') == 0: direcao = 'call'
                                     if cores.count('Verde') < cores.count('Vermelha') and cores.count('Doji') == 0: direcao = 'put'
-
+                                    ultimo_preco = vela[-1]['close']
+                                    high = max([candle['max'] for candle in vela])
+                                    low = min([candle['min'] for candle in vela])
+                                    fib_levels = fibonacci_levels(high, low)
                                     if analise_medias =='S':
                                         if direcao == tendencia:
                                             pass
@@ -266,15 +271,39 @@ def compra(ativo,entrada,direcao,exp,tipo):
                                             direcao = 'abortar'
 
 
-
+                                    if direcao=='put':
+                                        direcao='call'
+                                        direcao2=direcao
+                                    else:
+                                        direcao='put'
+                                        direcao2=direcao    
                                     if direcao == 'put' or direcao == 'call':
-                                        if direcao=='put':
-                                            direcao='call'
-                                        else:
-                                            direcao='put'
-                                        print('Velas: ',velas[-3] ,velas[-2] ,velas[-1] , ' - Entrada para ', direcao)
-                                        compra(ativo,valor_entrada,direcao,1,tipo)
-                                        print('\n')
+                                        if ultimo_preco < fib_levels[2]:
+                                            direcao = 'put'
+                                            if direcao2==direcao:
+                                                print('Velas: ',velas[-3] ,velas[-2] ,velas[-1] , ' - Entrada para ', direcao)
+                                                print('High: ',high ,' - Low: ',low ,' - Último preço: ',ultimo_preco , '- Level1: ', fib_levels[1], '- Level2: ', fib_levels[2], '- Level3: ', fib_levels[3], '- Level4: ', fib_levels[4])
+                                                compra(ativo,valor_entrada,direcao,1,tipo)
+                                                print('\n')
+                                            else:
+                                                direcao='call'
+                                                print('Velas: ',velas[-3] ,velas[-2] ,velas[-1] , ' - Entrada para ', direcao)
+                                                print('High: ',high ,' - Low: ',low ,' - Último preço: ',ultimo_preco , '- Level1: ', fib_levels[1], '- Level2: ', fib_levels[2], '- Level3: ', fib_levels[3], '- Level4: ', fib_levels[4])
+                                                compra(ativo,valor_entrada,direcao,1,tipo)
+                                                print('\n')        
+                                        elif ultimo_preco > fib_levels[2]:
+                                            direcao = 'call'
+                                            if direcao2==direcao:
+                                                print('Velas: ',velas[-3] ,velas[-2] ,velas[-1] , ' - Entrada para ', direcao)
+                                                print('High: ',high ,' - Low: ',low ,' - Último preço: ',ultimo_preco , '- Level1: ', fib_levels[1], '- Level2: ', fib_levels[2], '- Level3: ', fib_levels[3], '- Level4: ', fib_levels[4])
+                                                compra(ativo,valor_entrada,direcao,1,tipo)
+                                                print('\n')
+                                            else:
+                                                direcao='put'
+                                                print('Velas: ',velas[-3] ,velas[-2] ,velas[-1] , ' - Entrada para ', direcao)
+                                                print('High: ',high ,' - Low: ',low ,' - Último preço: ',ultimo_preco , '- Level1: ', fib_levels[1], '- Level2: ', fib_levels[2], '- Level3: ', fib_levels[3], '- Level4: ', fib_levels[4])
+                                                compra(ativo,valor_entrada,direcao,1,tipo)
+                                                print('\n')   
 
                                     else:
                                         if direcao == 'abortar':
@@ -284,7 +313,7 @@ def compra(ativo,entrada,direcao,exp,tipo):
 
                                         else:
                                             print('Velas: ',velas[-3] ,velas[-2] ,velas[-1] )
-                                            print('Entrada abortada - Foi encontrado um doji na análise.')
+                                            print('Entrada abortada - Contra tendência Fibonacci.')
                                             print('\nSeu Saldo na conta ',escolha, 'é de', cifrao,float(API.get_balance()))
 
 
@@ -320,6 +349,25 @@ def medias(velas):
 
     return tendencia
 
+# Função para calcular os níveis de Fibonacci
+def fibonacci_levels(high, low):
+    diff = high - low
+    level_0 = high
+    level_1 = high - 0.236 * diff
+    level_2 = high - 0.382 * diff
+    level_3 = high - 0.618 * diff
+    level_4 = low
+
+    return level_0, level_1, level_2, level_3, level_4
+
+# Verifica se o preço está próximo de algum nível de Fibonacci
+def is_near_fibonacci(price, levels):
+    for i, level in enumerate(levels[:-1]):
+        if price >= level and price <= levels[i + 1]:
+            return True
+    return False
+
+
 ### Função de análise MHI   
 def estrategia_mhi():
     global tipo,timeframe,qnt_velas
@@ -340,7 +388,6 @@ def estrategia_mhi():
 
     
     while True:
-        time.sleep(0.1)
 
         ### Horario do computador ###
         #minutos = float(datetime.now().strftime('%M.%S')[1:])
@@ -359,10 +406,12 @@ def estrategia_mhi():
 
             if analise_medias == 'S':
                 velas = API.get_candles(ativo, timeframe, velas_medias, time.time())
+                vela = API.get_candles(ativo, timeframe, qnt_velas, time.time())
                 tendencia = medias(velas)
 
             else:
                 velas = API.get_candles(ativo, timeframe, qnt_velas, time.time())
+                vela = API.get_candles(ativo, timeframe, qnt_velas, time.time())
 
 
             velas[-1] = 'Verde' if velas[-1]['open'] < velas[-1]['close'] else 'Vermelha' if velas[-1]['open'] > velas[-1]['close'] else 'Doji'
@@ -375,6 +424,10 @@ def estrategia_mhi():
             if cores.count('Verde') > cores.count('Vermelha') and cores.count('Doji') == 0: direcao = 'call'
             if cores.count('Verde') < cores.count('Vermelha') and cores.count('Doji') == 0: direcao = 'put'
 
+            ultimo_preco = vela[-1]['close']
+            high = max([candle['max'] for candle in vela])
+            low = min([candle['min'] for candle in vela])
+            fib_levels = fibonacci_levels(high, low)
             if analise_medias =='S':
                 if direcao == tendencia:
                     pass
@@ -383,15 +436,42 @@ def estrategia_mhi():
 
 
 
+
+            if direcao=='put':
+                direcao='call'
+                direcao2=direcao
+            else:
+                direcao='put'
+                direcao2=direcao    
             if direcao == 'put' or direcao == 'call':
-                if direcao=='put':
-                    direcao='call'
-                else:
-                    direcao='put'
-                print('Velas: ',velas[-3] ,velas[-2] ,velas[-1] , ' - Entrada para ', direcao)
-                valor_entrada = float(config['AJUSTES']['valor_entrada'])
-                compra(ativo,valor_entrada,direcao,1,tipo)
-                print('\n')
+                if ultimo_preco < fib_levels[2]:
+                    direcao = 'put'
+                    if direcao2==direcao:
+                        print('Velas: ',velas[-3] ,velas[-2] ,velas[-1] , ' - Entrada para ', direcao)
+                        print('High: ',high ,' - Low: ',low ,' - Último preço: ',ultimo_preco , '- Level1: ', fib_levels[1], '- Level2: ', fib_levels[2], '- Level3: ', fib_levels[3], '- Level4: ', fib_levels[4])
+                        compra(ativo,valor_entrada,direcao,1,tipo)
+                        print('\n')
+                    else:
+                        direcao='call'
+                        print('Velas: ',velas[-3] ,velas[-2] ,velas[-1] , ' - Entrada para ', direcao)
+                        print('High: ',high ,' - Low: ',low ,' - Último preço: ',ultimo_preco , '- Level1: ', fib_levels[1], '- Level2: ', fib_levels[2], '- Level3: ', fib_levels[3], '- Level4: ', fib_levels[4])
+                        compra(ativo,valor_entrada,direcao,1,tipo)
+                        print('\n')        
+                elif ultimo_preco > fib_levels[2]:
+                    direcao = 'call'
+                    if direcao2==direcao:
+                        print('Velas: ',velas[-3] ,velas[-2] ,velas[-1] , ' - Entrada para ', direcao)
+                        print('High: ',high ,' - Low: ',low ,' - Último preço: ',ultimo_preco , '- Level1: ', fib_levels[1], '- Level2: ', fib_levels[2], '- Level3: ', fib_levels[3], '- Level4: ', fib_levels[4])
+                        compra(ativo,valor_entrada,direcao,1,tipo)
+                        print('\n')
+                    else:
+                        direcao='put'
+                        print('Velas: ',velas[-3] ,velas[-2] ,velas[-1] , ' - Entrada para ', direcao)
+                        print('High: ',high ,' - Low: ',low ,' - Último preço: ',ultimo_preco , '- Level1: ', fib_levels[1], '- Level2: ', fib_levels[2], '- Level3: ', fib_levels[3], '- Level4: ', fib_levels[4])
+                        compra(ativo,valor_entrada,direcao,1,tipo)
+                        print('\n') 
+     
+                
 
             else:
                 if direcao == 'abortar':
@@ -401,10 +481,8 @@ def estrategia_mhi():
 
                 else:
                     print('Velas: ',velas[-3] ,velas[-2] ,velas[-1] )
-                    print('Entrada abortada - Foi encontrado um doji na análise.')
+                    print('Entrada abortada - Contra tendência Fibonacci.')
                     print('\nSeu Saldo na conta ',escolha, 'é de', cifrao,float(API.get_balance()))
-
-                time.sleep(2)
 
             print('\n######################################################################\n')
 
