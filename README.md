@@ -1,6 +1,6 @@
 # IQ_Option_API_MHI_FIBO_SMA_Support_Resistance
 
-## Atualização: bot opera com as estratégias médias móveis, Fibonacci,SMA e Suporte/Resistência.
+## Atualização: bot opera com as estratégias médias móveis, Fibonacci, SMA e Suporte/Resistência.
 ### Ao realizar o Martingale, ele faz a análise novamente das velas.
 
 #### 1. Primeiro, instale o Python [clicando aqui](https://www.python.org/downloads/), e tenha uma conta na [IQ Option](https://iqoption.com/)
