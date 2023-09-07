@@ -221,6 +221,22 @@ def compra(ativo,entrada,direcao,exp,tipo):
     
                         while True:
                             if i>0:    
+                                global support,resistance
+                                sma_value = get_sma(ativo, timeframe, velas_medias)
+        
+                                # Obtenha o preço atual
+                                current_price = API.get_candles(ativo, timeframe, velas_medias, time.time())[-1]['close']
+
+                                # Obtenha os níveis de suporte e resistência
+                                support, resistance = get_support_resistance(ativo, timeframe, velas_medias)
+    
+                                 # Obtenha o preço atual
+                                current_price = API.get_candles(ativo, timeframe, velas_medias, time.time())[-1]['close']
+                                vela = API.get_candles(ativo, timeframe, velas_medias, time.time())
+                                ultimo_preco = vela[-1]['close']
+                                high = max([candle['max'] for candle in vela])
+                                low = min([candle['min'] for candle in vela])
+                                fib_levels = fibonacci_levels(high, low)
                                 ### Horario do computador ###
                                 #minutos = float(datetime.now().strftime('%M.%S')[1:])
 
@@ -243,12 +259,10 @@ def compra(ativo,entrada,direcao,exp,tipo):
 
                                     if analise_medias == 'S':
                                         velas = API.get_candles(ativo, timeframe, velas_medias, time.time())
-                                        vela = API.get_candles(ativo, timeframe, velas_medias, time.time())
                                         tendencia = medias(velas)
 
                                     else:
                                         velas = API.get_candles(ativo, timeframe, qnt_velas, time.time())
-                                        vela = API.get_candles(ativo, timeframe, velas_medias, time.time())
 
 
                                     velas[-1] = 'Verde' if velas[-1]['open'] < velas[-1]['close'] else 'Vermelha' if velas[-1]['open'] > velas[-1]['close'] else 'Doji'
@@ -260,10 +274,6 @@ def compra(ativo,entrada,direcao,exp,tipo):
 
                                     if cores.count('Verde') > cores.count('Vermelha') and cores.count('Doji') == 0: direcao = 'call'
                                     if cores.count('Verde') < cores.count('Vermelha') and cores.count('Doji') == 0: direcao = 'put'
-                                    ultimo_preco = vela[-1]['close']
-                                    high = max([candle['max'] for candle in vela])
-                                    low = min([candle['min'] for candle in vela])
-                                    fib_levels = fibonacci_levels(high, low)
                                     if analise_medias =='S':
                                         if direcao == tendencia:
                                             pass
@@ -278,7 +288,7 @@ def compra(ativo,entrada,direcao,exp,tipo):
                                         direcao='put'
                                         direcao2=direcao    
                                     if direcao == 'put' or direcao == 'call':
-                                        if ultimo_preco < fib_levels[2]:
+                                        if ultimo_preco < fib_levels[2] and current_price < sma_value and current_price >= support:
                                             direcao = 'put'
                                             if direcao2==direcao:
                                                 print('Velas: ',velas[-3] ,velas[-2] ,velas[-1] , ' - Entrada para ', direcao)
@@ -291,7 +301,7 @@ def compra(ativo,entrada,direcao,exp,tipo):
                                                 print('High: ',high ,' - Low: ',low ,' - Último preço: ',ultimo_preco , '- Level1: ', fib_levels[1], '- Level2: ', fib_levels[2], '- Level3: ', fib_levels[3], '- Level4: ', fib_levels[4])
                                                 compra(ativo,valor_entrada,direcao,1,tipo)
                                                 print('\n')        
-                                        elif ultimo_preco > fib_levels[2]:
+                                        elif ultimo_preco > fib_levels[2] and current_price > sma_value and current_price <= support:
                                             direcao = 'call'
                                             if direcao2==direcao:
                                                 print('Velas: ',velas[-3] ,velas[-2] ,velas[-1] , ' - Entrada para ', direcao)
@@ -367,6 +377,21 @@ def is_near_fibonacci(price, levels):
             return True
     return False
 
+# Função para obter a média móvel simples (SMA)
+def get_sma(ativo, timeframe, velas_medias):
+    vela = API.get_candles(ativo, timeframe, velas_medias, time.time())
+    close_prices = [candle['close'] for candle in vela]
+    sma = sum(close_prices) / qnt_velas
+    return sma
+
+# Função para obter níveis de suporte e resistência
+def get_support_resistance(ativo, timeframe, velas_medias):
+    vela = API.get_candles(ativo, timeframe, velas_medias, time.time())
+    low_prices = [candle['min'] for candle in vela]
+    high_prices = [candle['max'] for candle in vela]
+    support = min(low_prices)
+    resistance = max(high_prices)
+    return support, resistance
 
 ### Função de análise MHI   
 def estrategia_mhi():
@@ -388,7 +413,23 @@ def estrategia_mhi():
 
     
     while True:
+        global resistance
+        sma_value = get_sma(ativo, timeframe, velas_medias)
+        
+        # Obtenha o preço atual
+        current_price = API.get_candles(ativo, timeframe, velas_medias, time.time())[-1]['close']
 
+        # Obtenha os níveis de suporte e resistência
+        support, resistance = get_support_resistance(ativo, timeframe, velas_medias)
+    
+        # Obtenha o preço atual
+        current_price = API.get_candles(ativo, timeframe, velas_medias, time.time())[-1]['close']
+
+        vela = API.get_candles(ativo, timeframe, qnt_velas, time.time())
+        ultimo_preco = vela[-1]['close']
+        high = max([candle['max'] for candle in vela])
+        low = min([candle['min'] for candle in vela])
+        fib_levels = fibonacci_levels(high, low)
         ### Horario do computador ###
         #minutos = float(datetime.now().strftime('%M.%S')[1:])
 
@@ -406,13 +447,10 @@ def estrategia_mhi():
 
             if analise_medias == 'S':
                 velas = API.get_candles(ativo, timeframe, velas_medias, time.time())
-                vela = API.get_candles(ativo, timeframe, qnt_velas, time.time())
                 tendencia = medias(velas)
 
             else:
                 velas = API.get_candles(ativo, timeframe, qnt_velas, time.time())
-                vela = API.get_candles(ativo, timeframe, qnt_velas, time.time())
-
 
             velas[-1] = 'Verde' if velas[-1]['open'] < velas[-1]['close'] else 'Vermelha' if velas[-1]['open'] > velas[-1]['close'] else 'Doji'
             velas[-2] = 'Verde' if velas[-2]['open'] < velas[-2]['close'] else 'Vermelha' if velas[-2]['open'] > velas[-2]['close'] else 'Doji'
@@ -424,10 +462,8 @@ def estrategia_mhi():
             if cores.count('Verde') > cores.count('Vermelha') and cores.count('Doji') == 0: direcao = 'call'
             if cores.count('Verde') < cores.count('Vermelha') and cores.count('Doji') == 0: direcao = 'put'
 
-            ultimo_preco = vela[-1]['close']
-            high = max([candle['max'] for candle in vela])
-            low = min([candle['min'] for candle in vela])
-            fib_levels = fibonacci_levels(high, low)
+            
+
             if analise_medias =='S':
                 if direcao == tendencia:
                     pass
@@ -442,9 +478,10 @@ def estrategia_mhi():
                 direcao2=direcao
             else:
                 direcao='put'
-                direcao2=direcao    
+                direcao2=direcao  
+             
             if direcao == 'put' or direcao == 'call':
-                if ultimo_preco < fib_levels[2]:
+                if ultimo_preco < fib_levels[2] and current_price < sma_value and current_price >= support:
                     direcao = 'put'
                     if direcao2==direcao:
                         print('Velas: ',velas[-3] ,velas[-2] ,velas[-1] , ' - Entrada para ', direcao)
@@ -457,7 +494,7 @@ def estrategia_mhi():
                         print('High: ',high ,' - Low: ',low ,' - Último preço: ',ultimo_preco , '- Level1: ', fib_levels[1], '- Level2: ', fib_levels[2], '- Level3: ', fib_levels[3], '- Level4: ', fib_levels[4])
                         compra(ativo,valor_entrada,direcao,1,tipo)
                         print('\n')        
-                elif ultimo_preco > fib_levels[2]:
+                elif ultimo_preco > fib_levels[2] and current_price > sma_value and current_price <= support:
                     direcao = 'call'
                     if direcao2==direcao:
                         print('Velas: ',velas[-3] ,velas[-2] ,velas[-1] , ' - Entrada para ', direcao)
