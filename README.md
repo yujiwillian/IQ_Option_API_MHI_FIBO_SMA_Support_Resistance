@@ -1,4 +1,4 @@
-# IQ_Option_API_MHI
+# IQ_Option_API_MHI_FIBO_SMA_Support_Resistance
 
 ## Atualização: bot opera com as estratégias médias móveis, Fibonacci,SMA e Suporte/Resistência.
 ### Ao realizar o Martingale, ele faz a análise novamente das velas.
